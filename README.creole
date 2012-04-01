@@ -14,7 +14,6 @@ rake
 the following happens:
 
 * the emacs git repository (or one you specify) is cloned locally (or the local one picked up)
-* the puppetvcs repistory (or one you specify) is cloned locally (or the local one picked up)
 * the vagrant box is downloaded from the Internet (or the cached one is selected)
 * a virtual machine is created (or the cached one picked up)
 * the virtual machine is started
@@ -27,3 +26,18 @@ the following happens:
 {{{
 emacs -Q --script {your specified repo}/build.el
 }}}
+
+== A full example ==
+
+{{{
+rake emacs_git_url=~/emacs-src.git myrepo=git://github.com/nicferrier/emacs-ci-demo.git
+}}}
+
+In this example we already have the Emacs git repository locally, so we pass that in. 
+
+The myrepo is also specified, this one is very simple.
+
+
+== Restrictions ==
+
+The myrepo MUST be a git read-only repository.
