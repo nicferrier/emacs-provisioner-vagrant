@@ -44,3 +44,8 @@ The myrepo is also specified, this one is very simple.
 == Restrictions ==
 
 The myrepo MUST be a git read-only repository.
+
+
+== How long does it take? ==
+
+Quite a long time on my little laptop. I need to do proper timing tests.
