@@ -1,7 +1,10 @@
 make Emacs provisioning boxes.
 
-This a vagrant/puppet/rake mish-mash to allow vagrant boxes to be
-provisioned with Emacs and your own testable script run inside them.
+This a [http://vagrantup.com/docs/rake.html|vagrant]/puppet/rake
+mish-mash to allow vagrant boxes to be provisioned with Emacs and your
+own testable script run inside them.
+
+That sounds like a lot of Ruby. But it isn't really.
 
 == How it works ==
 
