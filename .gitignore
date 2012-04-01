@@ -1,3 +1,6 @@
-/emacs.git
-/puppet/modules/local
 /.vagrant
+/emacs.git
+/puppetvcs.git
+/puppet/modules/local
+/puppet/modules/puppetvcs
+

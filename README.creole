@@ -1,0 +1,29 @@
+make Emacs provisioning boxes.
+
+This a vagrant/puppet/rake mish-mash to allow vagrant boxes to be
+provisioned with Emacs and your own testable script run inside them.
+
+== How it works ==
+
+When you run
+
+{{{
+rake
+}}}
+
+the following happens:
+
+* the emacs git repository (or one you specify) is cloned locally (or the local one picked up)
+* the puppetvcs repistory (or one you specify) is cloned locally (or the local one picked up)
+* the vagrant box is downloaded from the Internet (or the cached one is selected)
+* a virtual machine is created (or the cached one picked up)
+* the virtual machine is started
+* the virtual machine is provisioned with puppet
+** installs any needed OS dependancies (defined in puppet/modules/dependancies)
+** installs emacs from the local emacs git repository
+** pulls or clones your specified repo
+** runs:
+
+{{{
+emacs -Q --script {your specified repo}/build.el
+}}}
