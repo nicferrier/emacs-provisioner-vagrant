@@ -54,5 +54,6 @@ class emacs {
          path => "/usr/bin:/bin",
          creates => "/home/vagrant/emacs/bin/emacs",
          cwd => "/home/vagrant/emacs.git",
+         logoutput => true,
       }      
 }

@@ -4,7 +4,6 @@ namespace :emacs_vagrant do
   desc "Build the vagrant provisioning environment for Emacs"
   
   task :build => [:emacs_checkout, 
-                  "puppet/modules/puppetvcs/manifests/init.pp", 
                   "puppet/modules/local/manifests/init.pp"] do
   end
   
@@ -12,8 +11,6 @@ namespace :emacs_vagrant do
     desc "Clean the provisioning environment"
     sh "rm -rf puppet/modules/local"
     sh "rm -rf emacs.git"
-    sh "rm -rf puppetvcs.git"
-    sh "rm -rf puppet/modules/puppetvcs"
   end
 
   task :emacs_checkout do
@@ -31,26 +28,6 @@ namespace :emacs_vagrant do
     end
   end
 
-  file "puppet/modules/puppetvcs" => ["puppet/modules"] do
-    mkdir "puppet/modules/puppetvcs"
-  end
-
-  task :puppetvcs_deploy => [:puppetvcs_checkout, "puppet/modules/puppetvcs"] do
-    cp_r Dir.glob("puppetvcs.git/*"), "puppet/modules/puppetvcs"
-  end
-
-  file "puppet/modules/puppetvcs/manifests" => [:puppetvcs_deploy] do |t|
-    unless Dir.exist?(t.name)
-      mkdir t.name
-    end
-  end
-  
-  file "puppet/modules/puppetvcs/manifests/init.pp" => ["puppet/modules/puppetvcs/manifests"] do
-    File.open("puppet/modules/local/manifests/init.pp", "w") do |file|
-      file.write("class puppetvcs {}")
-    end
-  end
-
   file "puppet/modules/local" => ["puppet/modules"] do
     mkdir "puppet/modules/local"
   end
@@ -65,15 +42,7 @@ namespace :emacs_vagrant do
 
   file "puppet/modules/local/manifests/myrepo.pp" => ["puppet/modules/local/manifests"] do
     File.open("puppet/modules/local/manifests/myrepo.pp", "w") do |file|
-      file.write("# Built specifically for the user's repo
-
-class local::myrepo { 
-   include puppetvcs
-   vcsrepo { '/home/vagrant/myrepo.git':
-      provider => 'git',
-      source => '#{ENV['myrepo']}'
-   }
-}")
+      file.write("class local::myrepo { $my_repo_src = '#{ENV['myrepo']}'}")
     end
   end
   
