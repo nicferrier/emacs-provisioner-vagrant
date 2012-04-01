@@ -2,15 +2,34 @@ task :default => 'emacs_vagrant:build'
 
 namespace :emacs_vagrant do
   desc "Build the vagrant provisioning environment for Emacs"
+
+  require 'vagrant'
+  env = Vagrant::Environment.new
   
-  task :build => [:emacs_checkout, 
+  task :build => [:vagrantup,
+                  :emacs_checkout, 
                   "puppet/modules/local/manifests/init.pp"] do
+  end
+
+  task :fullclean do
+    desc "Kill the local emacs src repository and the VM image"
+    sh "rm -rf emacs.git"
+    env.primary_vm.destroy
   end
   
   task :clean do
     desc "Clean the provisioning environment"
     sh "rm -rf puppet/modules/local"
-    sh "rm -rf emacs.git"
+  end
+
+  task :suspend do
+    desc "Suspend any running VM"
+    env.primary_vm.suspend if env.primary_vm.state == :running
+  end
+
+  task :vagrantup do
+    desc "Bring up the vagrant VM"
+    env.primary_vm.start if env.primary_vm.state != :running
   end
 
   task :emacs_checkout do
@@ -28,12 +47,16 @@ namespace :emacs_vagrant do
     end
   end
 
-  file "puppet/modules/local" => ["puppet/modules"] do
-    mkdir "puppet/modules/local"
+  file "puppet/modules/local" => ["puppet/modules"] do |t|
+    unless Dir.exist?(t.name)
+      mkdir t.name
+    end
   end
   
-  file "puppet/modules/local/manifests" => ["puppet/modules/local"] do
-    mkdir "puppet/modules/local/manifests"
+  file "puppet/modules/local/manifests" => ["puppet/modules/local"] do |t|
+    unless Dir.exist?(t.name)
+      mkdir t.name
+    end
   end
   
   file "puppet/modules/local/manifests/init.pp" => ["puppet/modules/local/manifests", "puppet/modules/local/manifests/myrepo.pp"] do
