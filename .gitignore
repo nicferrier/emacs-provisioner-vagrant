@@ -1,6 +1,3 @@
 /.vagrant
 /emacs.git
-/puppetvcs.git
-/puppet/modules/local
-/puppet/modules/puppetvcs
-
+/puppet/modules/local/manifests/myrepo.pp
