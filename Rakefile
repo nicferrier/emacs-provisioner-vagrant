@@ -19,7 +19,7 @@ namespace :emacs_vagrant do
   
   task :clean do
     desc "Clean the provisioning environment"
-    sh "rm -rf puppet/modules/local"
+    sh "rm -rf puppet/modules/local/manifests/myrepo.pp"
   end
 
   task :suspend do
