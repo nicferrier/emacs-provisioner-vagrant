@@ -48,4 +48,5 @@ The myrepo MUST be a git read-only repository.
 
 == How long does it take? ==
 
-Quite a long time on my little laptop. I need to do proper timing tests.
+Exclusding Emacs repository download time and vagrant box fetch time, provisioning the 
+entire example Emacs environment took 32minutes on my acer laptop. 
