@@ -10,15 +10,15 @@ namespace :emacs_vagrant do
                   "puppet/modules/local/manifests/myrepo.pp"] do
   end
 
+  desc "Kill the local emacs src repository and the VM image"
   task :fullclean do
-    desc "Kill the local emacs src repository and the VM image"
     sh "rm -rf emacs.git"
     env = Vagrant::Environment.new
     env.primary_vm.destroy
   end
-  
+
+  desc "Clean the provisioning environment"  
   task :clean do
-    desc "Clean the provisioning environment"
     sh "rm -rf puppet/modules/local/manifests/myrepo.pp"
   end
 
