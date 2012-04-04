@@ -5,9 +5,7 @@ namespace :emacs_vagrant do
 
   require 'vagrant'
   
-  task :build => [:vagrantup,
-                  :emacs_checkout, 
-                  "puppet/modules/local/manifests/myrepo.pp"] do
+  task :build => [:vagrantup] do
   end
 
   desc "Kill the local emacs src repository and the VM image"
@@ -28,12 +26,6 @@ namespace :emacs_vagrant do
     env.primary_vm.suspend if env.primary_vm.state == :running
   end
 
-  task :vagrantup do
-    desc "Bring up the vagrant VM"
-    env = Vagrant::Environment.new
-    env.cli("up") if env.primary_vm.state != :running
-    #env.cli("provision")
-  end
 
   task :emacs_checkout do
     # Use either a user specified url or the default savannah one
@@ -43,10 +35,28 @@ namespace :emacs_vagrant do
     end
   end
 
+
   file "puppet/modules/local/manifests/myrepo.pp" => ["puppet/modules/local/manifests"] do
     File.open("puppet/modules/local/manifests/myrepo.pp", "w") do |file|
       file.write("class local::myrepo { $my_repo_src = \"#{ENV['myrepo']}\"}")
     end
+  end
+
+  task :box_add do 
+    desc "Add the emacs-ci box if it's needed."
+    env = Vagrant::Environment.new
+    unless env.boxes.find "emacs-ci"
+      env.cli("box", "add", "emacs-ci", "http://emacs-ci-vagrant.ferrier.me.uk/emacs-ci.box")
+    end
+  end
+
+  task :vagrantup => [:box_add,
+                      :emacs_checkout, 
+                      "puppet/modules/local/manifests/myrepo.pp"] do
+    desc "Bring up the vagrant VM"
+    env = Vagrant::Environment.new
+    env.cli("up") if env.primary_vm.state != :running
+    #env.cli("provision")
   end
   
 end
