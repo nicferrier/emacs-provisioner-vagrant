@@ -7,7 +7,7 @@ Vagrant::Config.run do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "vagrant-centos-6-autotools"
+  config.vm.box = "http://emacs-ci-vagrant.ferrier.me.uk/emacs-ci.box"
   config.vm.provision :puppet do |puppet|
     puppet.module_path = "puppet/modules"
     puppet.manifests_path = "puppet/manifests"
