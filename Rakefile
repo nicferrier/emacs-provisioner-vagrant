@@ -42,8 +42,8 @@ namespace :emacs_vagrant do
     end
   end
 
+  desc "Add the emacs-ci box if it's needed."
   task :box_add do 
-    desc "Add the emacs-ci box if it's needed."
     env = Vagrant::Environment.new
     unless env.boxes.find "emacs-ci"
       env.cli("box", "add", "emacs-ci", "http://emacs-ci-vagrant.ferrier.me.uk/emacs-ci.box")
