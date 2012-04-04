@@ -55,8 +55,11 @@ namespace :emacs_vagrant do
                       "puppet/modules/local/manifests/myrepo.pp"] do
     desc "Bring up the vagrant VM"
     env = Vagrant::Environment.new
-    env.cli("up") if env.primary_vm.state != :running
-    #env.cli("provision")
+    if env.primary_vm.state != :running
+      env.cli("up")
+    else
+      env.cli("provision")
+    end
   end
   
 end
