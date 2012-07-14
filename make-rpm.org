@@ -1,0 +1,28 @@
+
+* general advice on building RPMs
+** http://wiki.mandriva.com/en/Mandriva_RPM_HOWTO#Building_an_RPM_package
+
+* from the github repo
+** clone the repo
+** make the tarball
+make-dist --tar
+** upload the tarball somewhere (github?)
+
+* from the tarball
+** cp the tarball to an rpmdev environment
+*** like https://github.com/nicferrier/emacs-provisioner-vagrant
+**** the puppet setup there builds it
+*** I'll probably alter that repo to make it an rpm provisioner
+** then build the rpm
+*** vagrant ssh
+*** then 
+rm -rf ~/rpmbuild
+mkdir -p ~/rpmbuild/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+echo '%_topdir %(echo $HOME)/rpmbuild' > ~/.rpmmacros
+cp /vagrant/emacs-centos-6.spec ~/rpmbuild/SPECS
+cp /vagrant/emacs-24* ~/rpmbuild/SOURCES
+cd ~/rpmbuild/SPECS
+rpmbuild -ba emacs-centos-6.spec
+cp ../RPMS/i386/emacs-24.1.50-1.i386.rpm /vagrant/
+*** makes emacs-24.1.50-1.i386.rpm
+
